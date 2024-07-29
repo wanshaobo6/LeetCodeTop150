@@ -43,3 +43,33 @@
 # 1 <= nums.length <= 3 * 104
 # -104 <= nums[i] <= 104
 # nums 已按 非严格递增 排列
+
+from typing import List
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        length = len(nums)
+        if length <= 1:
+            return length
+        i = 0
+        j = 1
+        pre = nums[0]
+        while j < length:
+            while j < length and nums[j] == pre:
+                j += 1
+            if j >= length:
+                break
+            i += 1
+            if i != j:
+                tmp = nums[i]
+                nums[i] = nums[j]
+                nums[j] = tmp
+            pre = nums[i]
+            j += 1
+        return i + 1
+
+
+if __name__ == '__main__':
+    nums1: List[int] = [1, 1]
+    solution = Solution()
+    print(solution.removeDuplicates(nums1))
+    print(nums1)
