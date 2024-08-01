@@ -31,10 +31,25 @@ from typing import List
 class Solution:
 
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        return nums
+        answer = [1] * len(nums)
+
+        tmp = 1
+        # 计算下三角乘积
+        for idx in range(1, len(nums)-1):
+            tmp *= nums[idx]
+            answer[idx] = tmp
+        print(answer)
+
+        tmp = 1
+        # 累加上三角乘积
+        for idx in range(len(nums)-2, 0, -1):
+            tmp *= nums[idx]
+            answer[idx] *= tmp
+
+        return answer
 
 
 if __name__ == '__main__':
-    nums1: List[int] = [1,3,1,3,4]
+    nums1: List[int] = [1,3,1,4]
     solution = Solution()
     print(solution.productExceptSelf(nums1))

@@ -62,3 +62,29 @@
 
 class Solution:
     def romanToInt(self, s: str) -> int:
+        roman_symbol = ["M", "CM", "D", "CD", "C", "XC", "L", "XL",  "X", "IX", "V", "IV", "I"]
+        roman_number = [1000, 900, 500, 400, 100,  90,  50,   40,   10,  9,     5,     4,   1]
+        total = 0
+        symbol_index = 0
+        str_index = 0
+        while str_index < len(s):
+            if self.startWith(s, str_index, roman_symbol[symbol_index]):
+                total += roman_number[symbol_index]
+                str_index += len(roman_symbol[symbol_index])
+            else:
+                symbol_index += 1
+        return total
+
+    def startWith(self, s:str, si:int, sub_str:str) -> bool:
+        if si < 0 or not s or not sub_str:
+            return False
+        for i in range(len(sub_str)):
+            j = si + i
+            if j >= len(s) or s[j] != sub_str[i]:
+                return False
+        return True
+
+if __name__ == '__main__':
+    solution = Solution()
+    # print(solution.startWith("1", 0, "12"))
+    print(solution.romanToInt("MCMXCIV"))
