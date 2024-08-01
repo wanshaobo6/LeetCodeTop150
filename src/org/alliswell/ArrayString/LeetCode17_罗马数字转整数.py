@@ -61,24 +61,27 @@
 
 
 class Solution:
+
     def romanToInt(self, s: str) -> int:
         roman_symbol = ["M", "CM", "D", "CD", "C", "XC", "L", "XL",  "X", "IX", "V", "IV", "I"]
         roman_number = [1000, 900, 500, 400, 100,  90,  50,   40,   10,  9,     5,     4,   1]
         total = 0
         symbol_index = 0
+        symbol_len = 1
         str_index = 0
         while str_index < len(s):
-            if self.startWith(s, str_index, roman_symbol[symbol_index]):
+            if self.startWith(s, str_index, roman_symbol[symbol_index], symbol_len):
                 total += roman_number[symbol_index]
-                str_index += len(roman_symbol[symbol_index])
+                str_index += symbol_len
             else:
                 symbol_index += 1
+                symbol_len = len(roman_symbol[symbol_index])
         return total
 
-    def startWith(self, s:str, si:int, sub_str:str) -> bool:
+    def startWith(self, s:str, si:int, sub_str:str, sub_str_len:int) -> bool:
         if si < 0 or not s or not sub_str:
             return False
-        for i in range(len(sub_str)):
+        for i in range(sub_str_len):
             j = si + i
             if j >= len(s) or s[j] != sub_str[i]:
                 return False
