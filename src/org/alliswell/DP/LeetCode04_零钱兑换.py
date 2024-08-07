@@ -32,8 +32,25 @@
 # 1 <= coins[i] <= 2^31 - 1
 # 0 <= amount <= 10^4
 
-
+from typing import List
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
+        dp_arr = [-1] * (amount + 1)
+        dp_arr[0] = 0
+        idx = 0
+        while idx <= amount:
+            for coin in coins:
+                changed = idx + coin
+                if changed <= amount and (dp_arr[changed] == -1 or dp_arr[changed] > dp_arr[idx] + 1):
+                    dp_arr[changed] = dp_arr[idx] + 1
+            idx += 1
+            while idx <= amount and dp_arr[idx] == -1:
+                idx += 1
+        return dp_arr[amount]
 
 
+if __name__ == '__main__':
+    solution = Solution()
+    coins = [1, 2, 5]
+    amount = 11
+    print(solution.coinChange(coins, amount))
