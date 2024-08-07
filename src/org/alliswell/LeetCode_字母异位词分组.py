@@ -1,11 +1,3 @@
-#
-#
-# 代码
-#
-# 测试用例
-#
-# 测试结果
-# 测试结果
 # 49. 字母异位词分组
 # 中等
 #
@@ -40,3 +32,8 @@
 
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+
+
+if __name__ == '__main__':
+    solution = Solution()
+    print(solution.groupAnagrams("aaaaa", "aaaabbz"))

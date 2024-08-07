@@ -29,3 +29,18 @@
 
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
+        arr = [0] * 26
+        a_val = 97
+        for w in s:
+            arr[ord(w) - a_val] += 1
+        for w in t:
+            arr[ord(w) - a_val] -= 1
+
+        for t in arr:
+            if t != 0:
+                return False
+        return True
+
+if __name__ == '__main__':
+    solution = Solution()
+    print(solution.isAnagram("aaaabzb", "aaaabbz"))

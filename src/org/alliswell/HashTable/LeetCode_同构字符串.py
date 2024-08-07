@@ -30,6 +30,29 @@
 # 1 <= s.length <= 5 * 10^4
 # t.length == s.length
 # s 和 t 由任意有效的 ASCII 字符组成
-
+#
+#
+#
+#
+# 解题思路: 正向和反向都不存在映射冲突则他们是同构字符串
 class Solution:
     def isIsomorphic(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        return self.isIsomorphicHelper(s, t) and self.isIsomorphicHelper(t, s)
+
+
+    def isIsomorphicHelper(self, s: str, t: str) -> bool:
+        mapping = {}
+        for i in range(len(s)):
+            if mapping.get(s[i]) == None:
+                mapping[s[i]] = t[i]
+            elif mapping.get(s[i]) != t[i]:
+                return False
+        return True
+
+if __name__ == "__main__":
+    solution = Solution()
+    print(solution.isIsomorphic("egg", "add"))
+    print(solution.isIsomorphic("paper", "title"))
+    print(solution.isIsomorphic("foo", "tar"))
