@@ -47,7 +47,7 @@ class Solution:
         if p1[1] == p2[1]:
             return float('inf')
         return (p1[1] - p2[1])/(p1[0] - p2[0])
-    
+
 
 if __name__ == '__main__':
     solution = Solution()
