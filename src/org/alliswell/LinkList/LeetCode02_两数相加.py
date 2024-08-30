@@ -30,17 +30,47 @@
 # 0 <= Node.val <= 9
 # 题目数据保证列表表示的数字不含前导零
 
-
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+from typing import Optional
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        if not l1 or not l2:
+            return l2 if l1 is None else l1
+
+        res = ListNode(val=None)
+
+        h1, h2, h3 = l1, l2, res
+        add_flag = 0
+        while h1 and h2:
+            val_total = h1.val + h2.val + add_flag
+            h3.next = ListNode(val=val_total%10)
+            add_flag = val_total // 10
+            h1 = h1.next
+            h2 = h2.next
+            h3 = h3.next
+        while h1:
+            val_total = h1.val + add_flag
+            h3.next = ListNode(val=val_total%10)
+            add_flag = val_total // 10
+            h1 = h1.next
+            h3 = h3.next
+        while h2:
+            val_total = h2.val + add_flag
+            h3.next = ListNode(val=val_total%10)
+            add_flag = val_total // 10
+            h2 = h2.next
+            h3 = h3.next
+        if add_flag == 1:
+            h3.next = ListNode(val=1)
+        return res.next
 
 if __name__ == '__main__':
+    list_1 = ListNode(val=5, next=ListNode(val=2, next=ListNode(val=1, next=ListNode(val=6, next=ListNode(val=8, next=None)))))
+    list_2 = ListNode(val=5, next=ListNode(val=2, next=ListNode(val=1, next=ListNode(val=6, next=ListNode(val=8, next=None)))))
     solution = Solution()
-    l1 = ListNode(val=1, next=ListNode(val=2 , next=ListNode(val=4 , next=None)))
-    l2 = ListNode(val=1, next=ListNode(val=2 , next=ListNode(val=4 , next=None)))
-    print(solution.addTwoNumbers(head))
+    result = solution.addTwoNumbers(list_1, list_2)
+    print(result)
