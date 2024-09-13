@@ -33,14 +33,25 @@
 # 一个简单的改进方案是使用 O(m + n) 的额外空间，但这仍然不是最好的解决方案。
 # 你能想出一个仅使用常量空间的解决方案吗？
 
+from typing import List
 class Solution:
     def setZeroes(self, matrix: List[List[int]]) -> None:
-        """
-        Do not return anything, modify matrix in-place instead.
-        """
+        m, n = len(matrix), len(matrix[0])
+        row, col = [False] * m, [False] * n
+
+        for i in range(m):
+            for j in range(n):
+                if matrix[i][j] == 0:
+                    row[i] = col[j] = True
+
+        for i in range(m):
+            for j in range(n):
+                if row[i] or col[j]:
+                    matrix[i][j] = 0
 
 
 if __name__ == '__main__':
     solution = Solution()
-    board = [[0,1,0],[0,0,1],[1,1,1],[0,0,0]]
-    print(solution.gameOfLife(board))
+    board = [[0,1,0],[0,0,1],[1,1,1]]
+    solution.setZeroes(board)
+    print(board)
