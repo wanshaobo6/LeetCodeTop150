@@ -1,7 +1,11 @@
 # 228. 汇总区间
+<<<<<<< HEAD
 # 已解答
 # 简单
 #
+=======
+# 简单
+>>>>>>> 20240915 solved 1
 # 相关标签
 # 相关企业
 # 给定一个  无重复元素 的 有序 整数数组 nums 。
@@ -40,8 +44,7 @@
 # nums 中的所有值都 互不相同
 # nums 按升序排列
 
-
-
+from typing import List
 class Solution:
     def summaryRanges(self, nums: List[int]) -> List[str]:
         if not nums or len(nums) <= 0:
@@ -67,3 +70,8 @@ class Solution:
                 else:
                     result.append(str(nums[start_idx]) + "->" + str(nums[start_idx+succession-1]))
         return result
+
+if __name__ == '__main__':
+    solution = Solution()
+    print(solution.summaryRanges(nums = [0,1,2,4,5,7]))
+    print(solution.summaryRanges(nums = [0,2,3,4,6,8,9]))
