@@ -23,8 +23,18 @@
 #
 # 提示：
 #
-# 1 <= k <= nums.length <= 105
-# -104 <= nums[i] <= 104
+# 1 <= k <= nums.length <= 10^5
+# -10^4 <= nums[i] <= 10^4
 
+from typing import List
+import heapq
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
+        list = heapq.nlargest(k, nums)
+        return list[len(list) - 1]
+
+
+if __name__ == '__main__':
+    solution = Solution()
+    print(solution.findKthLargest([3,2,1,5,6,4], 2))
+    print(solution.findKthLargest([3,2,3,1,2,4,5,5,6], 4))

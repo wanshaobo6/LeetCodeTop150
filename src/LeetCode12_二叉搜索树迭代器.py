@@ -46,25 +46,50 @@
 #
 # 你可以设计一个满足下述条件的解决方案吗？next() 和 hasNext() 操作均摊时间复杂度为 O(1) ，并使用 O(h) 内存。其中 h 是树的高度。
 
+from typing import Optional
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
 class BSTIterator:
 
     def __init__(self, root: Optional[TreeNode]):
-
+        self.node_stack = []
+        while root:
+            self.node_stack.append(root)
+            root = root.left
 
     def next(self) -> int:
-
+        if not self.hasNext():
+            return -1
+        node = self.node_stack.pop()
+        tmp_node = node.right
+        if tmp_node:
+            self.node_stack.append(tmp_node)
+            while tmp_node.left:
+                self.node_stack.append(tmp_node.left)
+                tmp_node = tmp_node.left
+        return node.val
 
     def hasNext(self) -> bool:
-
+        return len(self.node_stack) != 0
 
 
 # Your BSTIterator object will be instantiated and called as such:
 # obj = BSTIterator(root)
 # param_1 = obj.next()
 # param_2 = obj.hasNext()
+
+if __name__ == '__main__':
+    tree = TreeNode(val=7, left=TreeNode(val=3), right=TreeNode(val=15, left=TreeNode(val=9), right=TreeNode(val=20)))
+    bst_iterator = BSTIterator(tree)
+    print(bst_iterator.next())
+    print(bst_iterator.next())
+    print(bst_iterator.next())
+    print(bst_iterator.next())
+    print(bst_iterator.next())
+    print(bst_iterator.next())
