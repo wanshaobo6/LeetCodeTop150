@@ -29,24 +29,15 @@
 
 from typing import List
 class Solution:
-
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        answer = [1] * len(nums)
+        ans, tmp = [1] * len(nums), 1
+        for i in range(1, len(nums)):
+            ans[i] = ans[i - 1] * nums[i - 1] # 下三角
+        for i in range(len(nums) - 2, -1, -1):
+            tmp *= nums[i + 1]                # 上三角
+            ans[i] *= tmp                     # 下三角 * 上三角
+        return ans
 
-        tmp = 1
-        # 计算下三角乘积
-        for idx in range(1, len(nums)-1):
-            tmp *= nums[idx]
-            answer[idx] = tmp
-        print(answer)
-
-        tmp = 1
-        # 累加上三角乘积
-        for idx in range(len(nums)-2, 0, -1):
-            tmp *= nums[idx]
-            answer[idx] *= tmp
-
-        return answer
 
 
 if __name__ == '__main__':
