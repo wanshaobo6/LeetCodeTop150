@@ -37,20 +37,60 @@
 # word 和 prefix 仅由小写英文字母组成
 # insert、search 和 startsWith 调用次数 总计 不超过 3 * 104 次
 
+class TrieNode:
+    def __init__(self, is_leaf: bool, next: dict):
+        self.is_leaf = is_leaf
+        self.next = next
+
 class Trie:
 
     def __init__(self):
-        self.dict_map = [None]*26
+        self.trie_map = {}
 
     def insert(self, word: str) -> None:
-
+        if not word:
+            return
+        tmp_map = self.trie_map
+        word_len = len(word)
+        for i in range(word_len):
+            c = word[i]
+            if c in tmp_map:
+                trie_node = tmp_map.get(c)
+            else:
+                trie_node = TrieNode(is_leaf=False, next={})
+                tmp_map[c] = trie_node
+            if i == word_len-1:
+                trie_node.is_leaf = True
+            tmp_map = trie_node.next
         return
 
     def search(self, word: str) -> bool:
-        return
+        if not word:
+            return False
+        tmp_map = self.trie_map
+        word_len = len(word)
+        for i in range(word_len):
+            c = word[i]
+            if c not in tmp_map:
+                return False
+            trie_node = tmp_map.get(c)
+            if i == word_len-1:
+                return trie_node.is_leaf
+            tmp_map = trie_node.next
+        return False
 
     def startsWith(self, prefix: str) -> bool:
-
+        if not prefix:
+            return False
+        tmp_map = self.trie_map
+        word_len = len(prefix)
+        for i in range(word_len):
+            c = prefix[i]
+            if c not in tmp_map:
+                return False
+            trie_node = tmp_map.get(c)
+            tmp_map = trie_node.next
+        return True
 
 
 # Your Trie object will be instantiated and called as such:
@@ -63,8 +103,9 @@ class Trie:
 if __name__ == '__main__':
     trie = Trie();
     trie.insert("apple");
-    trie.search("apple");   # 返回 True
-    trie.search("app");     # 返回 False
-    trie.startsWith("app"); # 返回 True
-    trie.insert("app");
-    trie.search("app");     # 返回 True
+    trie.insert("abc");
+    print(trie.search("apple"))   # 返回 True
+    print(trie.search("app"))     # 返回 False
+    print(trie.startsWith("app")) # 返回 True
+    trie.insert("app")
+    print(trie.search("app"))     # 返回 True
