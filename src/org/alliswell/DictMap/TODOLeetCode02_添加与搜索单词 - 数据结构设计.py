@@ -40,20 +40,65 @@
 # search 中的 word 由 '.' 或小写英文字母组成
 # 最多调用 10^4 次 addWord 和 search
 
+class TrieNode:
+    def __init__(self, is_leaf: bool):
+        self.is_leaf = is_leaf
+        self.next = [None] * 26
+
+from typing import List
 class WordDictionary:
 
     def __init__(self):
-
+        self.dict_map = [None] * 26
 
     def addWord(self, word: str) -> None:
-
+        if not word:
+            return
+        tmp_map = self.dict_map
+        word_len = len(word)
+        for i in range(word_len):
+            index = ord(word[i]) - ord('a')
+            assert 0 <= index < 26
+            if tmp_map[index]:
+                trie_node = tmp_map[index]
+            else:
+                trie_node = TrieNode(is_leaf=False)
+                tmp_map[index] = trie_node
+            if i == word_len-1:
+                trie_node.is_leaf = True
+            tmp_map = trie_node.next
+        return
 
     def search(self, word: str) -> bool:
+        if not word:
+            return False
+        return self.search_core(word, 0, self.dict_map)
+
+    def search_core(self, word: str, word_idx:int, dict_map: List[TrieNode]) -> bool:
+        c = word[word_idx]
+        if c == '.':
+            left, right = 0, 26
+        else:
+            index = ord(c) - ord('a')
+            left, right = index, index+1
+        for i in range(left, right):
+            trie_node = dict_map[i]
+            if not trie_node:
+                continue
+            if word_idx == len(word)-1:
+                return trie_node.is_leaf
+            if self.search_core(word, word_idx+1, trie_node.next):
+                return True
+        return False
+
 
 
 if __name__ == '__main__':
-    
-# Your WordDictionary object will be instantiated and called as such:
-# obj = WordDictionary()
-# obj.addWord(word)
-# param_2 = obj.search(word)
+    wordDictionary = WordDictionary()
+    wordDictionary.addWord("bad")
+    wordDictionary.addWord("dad")
+    wordDictionary.addWord("mad")
+    print(wordDictionary.search("pad"))
+    print(wordDictionary.search("bad"))
+    print(wordDictionary.search(".ad"))
+    print(wordDictionary.search("b.."))
