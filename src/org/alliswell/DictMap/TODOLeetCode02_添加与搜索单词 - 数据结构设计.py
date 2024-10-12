@@ -1,3 +1,4 @@
+# TODO Review 不能因为其中一个节点不是叶子节点就返回False
 # 211. 添加与搜索单词 - 数据结构设计
 # 中等
 #
@@ -86,7 +87,12 @@ class WordDictionary:
             if not trie_node:
                 continue
             if word_idx == len(word)-1:
-                return trie_node.is_leaf
+                if trie_node.is_leaf:
+                    return True
+                continue
+            # 不能因为其中一个节点不是叶子节点就返回False
+            # if word_idx == len(word)-1:
+            #     return trie_node.is_leaf
             if self.search_core(word, word_idx+1, trie_node.next):
                 return True
         return False
@@ -98,7 +104,8 @@ if __name__ == '__main__':
     wordDictionary.addWord("bad")
     wordDictionary.addWord("dad")
     wordDictionary.addWord("mad")
-    print(wordDictionary.search("pad"))
-    print(wordDictionary.search("bad"))
-    print(wordDictionary.search(".ad"))
-    print(wordDictionary.search("b.."))
+    print(wordDictionary.search("m.d"))
+    # print(wordDictionary.search("pad"))
+    # print(wordDictionary.search("bad"))
+    # print(wordDictionary.search(".ad"))
+    # print(wordDictionary.search("b.."))
