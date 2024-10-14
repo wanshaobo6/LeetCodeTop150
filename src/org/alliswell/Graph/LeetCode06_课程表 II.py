@@ -40,9 +40,9 @@ from typing import List
 class NextNode:
     def __init__(self):
         self.waiting_task_num = 0
-        self.is_run_finished = False
         self.next_tasks = []
 
+import queue
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         # 初始化邻接表
@@ -54,23 +54,39 @@ class Solution:
             courses[before_task].next_tasks.append(after_task)
 
         result = []
-        while len(result) < numCourses:
-            # 选择一个没有前置课程的课
-            run_idx = -1
-            for i in range(len(courses)):
-                course = courses[i]
-                if course.waiting_task_num == 0 and not course.is_run_finished:
-                    run_idx = i
-                    break
-            # 如果没有可以选择的课
-            if run_idx == -1:
-                return []
+        # while len(result) < numCourses:
+        #     # 选择一个没有前置课程的课
+        #     run_idx = -1
+        #     for i in range(len(courses)):
+        #         course = courses[i]
+        #         if course.waiting_task_num == 0 and not course.is_run_finished:
+        #             run_idx = i
+        #             break
+        #     # 如果没有可以选择的课
+        #     if run_idx == -1:
+        #         return []
+        #     result.append(run_idx)
+        #     select_course = courses[run_idx]
+        #     for next_task_idx in select_course.next_tasks:
+        #         courses[next_task_idx].waiting_task_num -= 1
+        #     select_course.is_run_finished = True
+
+        # 可使用队列来降低时间复杂度
+        q = queue.Queue()
+        # 1.所有度为0的课程进入队列
+        for i in range(numCourses):
+            course = courses[i]
+            if course.waiting_task_num == 0:
+                q.put(i)
+        # 2.消费队列中的课程
+        while not q.empty():
+            run_idx = q.get()
             result.append(run_idx)
-            select_course = courses[run_idx]
-            for next_task_idx in select_course.next_tasks:
+            for next_task_idx in courses[run_idx].next_tasks:
                 courses[next_task_idx].waiting_task_num -= 1
-            select_course.is_run_finished = True
-        return result
+                if courses[next_task_idx].waiting_task_num == 0:
+                    q.put(next_task_idx)
+        return result if len(result) == numCourses else []
 
 
 
