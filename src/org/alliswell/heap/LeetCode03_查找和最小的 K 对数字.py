@@ -1,3 +1,4 @@
+# TODO REVIEW
 # 373. 查找和最小的 K 对数字
 # 中等
 #
@@ -46,27 +47,41 @@ class Wrapper:
         return self.sum < other.sum
 
 
-class Solution:
-    def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
-        hp = []
-        res = []
-
-        i = 0
-        while i < len(nums1):
-            for j in range(len(nums2)):
-                heapq.heappush(hp, [nums1[i]+nums2[j], nums1[i], nums2[j]])
-            i += 1
-            if i < len(nums1):
-                threshold = nums1[i] + nums2[0]
-            else:
-                threshold = sys.maxsize
-            while len(hp) != 0 and hp[0][0] <= threshold:
-                item = heapq.heappop(hp)
-                res.append([item[1], [item[2]]])
-                k -= 1
-                if k == 0:
-                    return res
-        return res
+# class Solution:
+    # 超时答案
+    # def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+    #     hp = []
+    #     res = []
+    #
+    #     i = 0
+    #     while i < len(nums1):
+    #         for j in range(len(nums2)):
+    #             heapq.heappush(hp, [nums1[i]+nums2[j], nums1[i], nums2[j]])
+    #         i += 1
+    #         if i < len(nums1):
+    #             threshold = nums1[i] + nums2[0]
+    #         else:
+    #             threshold = sys.maxsize
+    #         while len(hp) != 0 and hp[0][0] <= threshold:
+    #             item = heapq.heappop(hp)
+    #             res.append([item[1], [item[2]]])
+    #             k -= 1
+    #             if k == 0:
+    #                 return res
+    #     return res
+    #
+    # 正确答案: https://leetcode.cn/problems/find-k-pairs-with-smallest-sums/?envType=study-plan-v2&envId=top-interview-150
+    class Solution:
+        def kSmallestPairs(self, nums1: List[int], nums2: List[int], k: int) -> List[List[int]]:
+            m, n = len(nums1), len(nums2)
+            ans = []
+            pq = [(nums1[i] + nums2[0], i, 0) for i in range(min(k, m))]
+            while pq and len(ans) < k:
+                _, i, j = heappop(pq)
+                ans.append([nums1[i], nums2[j]])
+                if j + 1 < n:
+                    heappush(pq, (nums1[i] + nums2[j + 1], i, j + 1))
+            return ans
 
 
 if __name__ == '__main__':
