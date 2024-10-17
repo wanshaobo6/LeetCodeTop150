@@ -44,7 +44,29 @@ class Solution:
         """
         Do not return anything, modify board in-place instead.
         """
+        # 将直接或者间接与边界0相连的0置为1
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if i ==0 or i == len(board)-1 or j == 0 or j == len(board[0])-1:
+                    if board[i][j] == "O":
+                        self.dfs_mark_1(board, i, j)
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if board[i][j] == "O":
+                    board[i][j] = "X"
+                elif board[i][j] == "I":
+                    board[i][j] = "O"
         print(board)
+    def dfs_mark_1(self, board: List[List[str]], i:int, j:int):
+        if not (0 <= i < len(board) and 0 <= j < len(board[0])):
+            return
+        if board[i][j] != "O":
+            return
+        board[i][j] = "I"
+        self.dfs_mark_1(board, i-1, j)
+        self.dfs_mark_1(board, i+1, j)
+        self.dfs_mark_1(board, i, j-1)
+        self.dfs_mark_1(board, i, j+1)
 
 if __name__ == '__main__':
     solution = Solution()
