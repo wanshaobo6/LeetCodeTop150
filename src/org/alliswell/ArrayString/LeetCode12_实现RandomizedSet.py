@@ -38,21 +38,40 @@
 # 最多调用 insert、remove 和 getRandom 函数 2 * 105 次
 # 在调用 getRandom 方法时，数据结构中 至少存在一个 元素。
 
-
 class RandomizedSet:
-
     def __init__(self):
-
+        self.nums = []
+        self.indices = {}
 
     def insert(self, val: int) -> bool:
-
+        if val in self.indices:
+            return False
+        self.indices[val] = len(self.nums)
+        self.nums.append(val)
+        return True
 
     def remove(self, val: int) -> bool:
-
+        if val not in self.indices:
+            return False
+        id = self.indices[val]
+        self.nums[id] = self.nums[-1]
+        self.indices[self.nums[id]] = id
+        self.nums.pop()
+        del self.indices[val]
+        return True
 
     def getRandom(self) -> int:
+        return choice(self.nums)
 
 
+if __name__ == '__main__':
+    randomizedSet = RandomizedSet()
+    print(randomizedSet.remove(0))
+    print(randomizedSet.remove(0))
+    print(randomizedSet.insert(0))
+    print(randomizedSet.getRandom())
+    print(randomizedSet.remove(0))
+    print(randomizedSet.insert(0))
 
 # Your RandomizedSet object will be instantiated and called as such:
 # obj = RandomizedSet()
