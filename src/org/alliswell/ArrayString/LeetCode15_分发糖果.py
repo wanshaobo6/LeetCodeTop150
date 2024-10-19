@@ -37,18 +37,16 @@ from typing import List
 class Solution:
     def candy(self, ratings: List[int]) -> int:
         length = len(ratings)
-        candy_arr = [1] * length
-        for idx in range(1, length):
-            rating_diff = ratings[idx] - ratings[idx-1]
-            if rating_diff > 0:
-                candy_arr[idx] = candy_arr[idx-1] + 1
-            elif rating_diff < 0:
-                for pre_idx in range(idx-1, -1, -1):
-                    cur_idx = pre_idx + 1
-                    if ratings[pre_idx] > ratings[cur_idx] and candy_arr[pre_idx] == candy_arr[cur_idx]:
-                        candy_arr[pre_idx] += 1
-                    else:
-                        break
+        candy_arr = [-1] * length
+        sorted_ratings = sorted([[ratings[i], i] for i in range(length)])
+        for sorted_rating in sorted_ratings:
+            small_idx = sorted_rating[1]
+            alloc_candy = 1
+            if small_idx - 1 >= 0 and ratings[small_idx - 1] <  ratings[small_idx]:
+                alloc_candy = max(candy_arr[small_idx-1]+1, alloc_candy)
+            if small_idx + 1 < length and ratings[small_idx + 1] <  ratings[small_idx]:
+                alloc_candy = max(candy_arr[small_idx+1]+1, alloc_candy)
+            candy_arr[small_idx] = alloc_candy
         return sum(candy_arr)
 
 

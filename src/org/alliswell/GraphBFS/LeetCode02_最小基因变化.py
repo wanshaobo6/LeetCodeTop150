@@ -53,14 +53,13 @@ class Solution:
         queue = deque([(startGene, 0)])
         while queue:
             start, step = queue.popleft()
-            visit.add(start)
             for next_gen in bank:
                 if next_gen in visit or not can_transfer(start, next_gen):
                     continue
                 if next_gen == endGene:
                     return step + 1
                 queue.append((next_gen, step+1))
-
+                visit.add(next_gen)
         return -1
 
 if __name__ == '__main__':
