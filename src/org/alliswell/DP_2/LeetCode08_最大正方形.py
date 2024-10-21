@@ -29,7 +29,6 @@
 # n == matrix[i].length
 # 1 <= m, n <= 300
 # matrix[i][j] 为 '0' 或 '1'
-#TODO 有更优的方案
 from typing import List
 class Solution:
     def maximalSquare(self, matrix: List[List[str]]) -> int:
